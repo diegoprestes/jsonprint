@@ -1,0 +1,53 @@
+.input {
+	padding: 20px 50px;
+	background: $background-gray2;
+
+	.input-header {
+		cursor: pointer;
+		display: inline-block;
+		user-select: none;
+	}
+
+	.fields {
+		width: 400px;
+	}
+
+	.field-group {
+		margin: 20px 0;
+
+		.field-label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		.field-area {
+			width: 100%;
+			height: 100px;
+			resize: none;
+			border: 0;
+			border-radius: 4px;
+		}
+
+		.field-text {
+			width: 100%;
+			height: 20px;
+			border: 0;
+			border-radius: 4px;
+		}
+
+		.field-file {
+
+		}
+
+		.field-process {
+			width: 100%;
+			height: 40px;
+			border: 0;
+			border-radius: 4px;
+
+			&:hover {
+				background: #DDD;
+			}
+		}
+	}
+}
