@@ -1,0 +1,15 @@
+.notification {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	border-radius: 4px;
+	background: #222;
+	padding: 15px;
+	color: #FFF;
+	opacity: 0;
+	transition: opacity .2s ease-in;
+
+	&.visible {
+		opacity: 1;
+	}
+}

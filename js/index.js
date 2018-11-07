@@ -1,7 +1,8 @@
-import JSONPrint from './json-parse';
+import JSONPrint from './json-print';
+import Notification from './notification';
 
 document.addEventListener('DOMContentLoaded', function() {
-	console.log('loaded');
-	
+	window.notification = new Notification();
+
 	new JSONPrint();
 });
