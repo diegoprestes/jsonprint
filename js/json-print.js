@@ -98,14 +98,17 @@ export default class JSONPrint {
 		let html = '<ul>';
 		for (let key in data) {
 			let keyClass = 'json-key';
+			let keyText = '"' + key + '"';
+			let keySeparator = ': ';
 			if (typeof(data[key]) == 'object' && data[key] != null) {
 				keyClass = 'json-key expansive';
 			}
-			let keyIcons = '<span class="icon icon-add-outline"></span><span class="icon icon-minus-outline"></span>';
-			let keyValue = '<span class="' + keyClass + '">' + keyIcons + '"' + key + '"</span>: ';
 			if (data instanceof Array) {
-				keyValue = '';
+				keyText = '';
+				keySeparator = '';
 			}
+			let keyIcons = '<span class="icon icon-add-outline"></span><span class="icon icon-minus-outline"></span>';
+			let keyValue = '<span class="' + keyClass + '">' + keyIcons + keyText + '</span>' + keySeparator;
 
 			html += '<li>';
 			if (data[key] == null) {
