@@ -1,7 +1,61 @@
 .output {
-	padding: 20px 30px;
+	padding: 20px 45px;
+	line-height: 18px;
+	font-family: monospace;
+	font-weight: bold;
 
 	ul {
 		margin-left: 20px;
+	}
+
+	li {
+
+	}
+
+	.json-key {
+		color: #000;
+		position: relative;
+
+		.icon {
+			position: absolute;
+			top: 3px;
+			left: -15px;
+			display: none;
+			font-size: 12px;
+		}
+
+		&.expansive {
+			cursor: pointer;
+
+			.icon-minus-outline {
+				display: block;
+			}
+		}
+
+		&.closed {
+			.icon-add-outline {
+				display: block;
+			}
+		}
+
+		&.closed + ul {
+			display: none;
+		}
+	}
+
+	.json-value-number {
+		color: #000E59;
+	}
+
+	.json-value-string {
+		color: #025900;
+	}
+
+	.json-value-bool {
+		color: #600100;
+	}
+
+	.json-value-null {
+		color: #777;
 	}
 }

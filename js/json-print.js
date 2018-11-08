@@ -55,13 +55,13 @@ export default class JSONPrint {
 				window.notification.show('Invalid JSON');
 			}
 		} else if (this.fieldURL.value) {
-			var url = this.fieldURL.value;	
+			let url = this.fieldURL.value;	
 
 			this.loadJSON(url);
 		} else if (this.fieldFile.value) {
-			console.log(this.fieldFile.value);
+			let url = window.URL.createObjectURL(this.fieldFile.files[0]);
 
-			this.fieldFile.value = null;	
+			this.loadJSON(url);
 		}
 	}
 
@@ -78,26 +78,38 @@ export default class JSONPrint {
 	processJSON(data) {
 		this.updateInputState(false);
 
-		// http://localhost:3005/build/json/test.json
+		let bracketStart = '{';
+		let bracketEnd = '}';
+		if (data instanceof Array) {
+			bracketStart = '[';
+			bracketEnd = ']';
+		}
 		
 		var html = '<div class="json-wrapper">';
-		html += this.processObject(data);
+		html += bracketStart + this.processObject(data) + bracketEnd;
 		html += '</div>';
 
 		this.output.innerHTML = html;
+
+		this.bindOutput();
 	}
 
 	processObject(data) {
 		let html = '<ul>';
 		for (let key in data) {
-			let keyValue = '"' + key + '": ';
+			let keyClass = 'json-key';
+			if (typeof(data[key]) == 'object' && data[key] != null) {
+				keyClass = 'json-key expansive';
+			}
+			let keyIcons = '<span class="icon icon-add-outline"></span><span class="icon icon-minus-outline"></span>';
+			let keyValue = '<span class="' + keyClass + '">' + keyIcons + '"' + key + '"</span>: ';
 			if (data instanceof Array) {
 				keyValue = '';
 			}
 
 			html += '<li>';
 			if (data[key] == null) {
-				html += keyValue + data[key] + ',';
+				html += keyValue + '<span class="json-value-null">' + data[key] + '</span>' + ',';
 			} else if (typeof(data[key]) == 'object') {
 				let bracketStart = '{';
 				let bracketEnd = '}';
@@ -109,9 +121,13 @@ export default class JSONPrint {
 				html += keyValue + bracketStart + this.processObject(data[key]) + bracketEnd + ',';
 			} else {
 				if (typeof(data[key]) == 'string') {
-					html += keyValue + '"' + data[key] + '",';;	
+					html += keyValue + '"' + '<span class="json-value-string">' + data[key] + '</span>' + '",';
 				} else {
-					html += keyValue + data[key] + ',';;
+					let valueClass = 'json-value-number';
+					if (typeof(data[key]) == "boolean") {
+						valueClass = 'json-value-bool';
+					}
+					html += keyValue + '<span class="' + valueClass + '">' + data[key] + '</span>' + ',';
 				}
 				
 			}
@@ -120,5 +136,19 @@ export default class JSONPrint {
 		html += '</ul>';
 
 		return html;
+	}
+
+	bindOutput() {
+		var jsonKeyList = document.querySelectorAll('.json-key.expansive');
+		jsonKeyList.forEach((item) => {
+			item.addEventListener('click', (event) => {
+				let target = event.currentTarget;
+				if (target.classList.contains('closed')) {
+					target.classList.remove('closed');
+				} else {
+					target.classList.add('closed');
+				}
+			});
+		});
 	}
 }
