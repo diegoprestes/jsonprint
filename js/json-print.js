@@ -7,8 +7,8 @@ export default class JSONPrint {
 		this.isInputOpened = true;
 		this.input = document.querySelector('.input');
 		this.inputHeader = this.input.querySelector('.input-header');
-		this.inputHeaderUp = this.inputHeader.querySelector('.icon-circle-up');
-		this.inputHeaderDown = this.inputHeader.querySelector('.icon-circle-down');
+		this.inputHeaderUp = this.inputHeader.querySelector('.icon-cheveron-outline-up');
+		this.inputHeaderDown = this.inputHeader.querySelector('.icon-cheveron-outline-down');
 
 		this.fields = this.input.querySelector('.fields');
 		this.fieldPlainText = this.fields.querySelector('.field-area');
