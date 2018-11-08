@@ -55,11 +55,20 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('js', function () {
-  return gulp.src(config.js.tmp)
+  const b = browserify({
+    entries: 'js/index.js',
+    transform: babelify,
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe(source('bundle.js'))
+  // return gulp.src(config.js.tmp)
     .pipe($.plumber({
       errorHandler: onError
     }))
-    .pipe(babel())
+    // .pipe(babel())
+    .pipe(buffer())
     .pipe($.uglify())
     .pipe($.rev())
     .pipe(gulp.dest(config.js.dest))
@@ -77,7 +86,6 @@ gulp.task('devjs', function () {
   return b.bundle()
     .pipe(source('bundle.js'))
 
-  // return gulp.src(config.js.all)
     .pipe($.plumber({
       errorHandler: onError
     }))
@@ -209,7 +217,7 @@ gulp.task('watch', function (done) {
 gulp.task('server', function (done) {
   browserSync.init({
     server: {
-      baseDir: "./"
+      baseDir: "./build"
     }
   });
   done();
@@ -233,6 +241,7 @@ gulp.task('vdist', function (done) {
     'devimg',
     'devfonts',
     ['devcss', 'devjs'],
+    'html',
     'addVersion'
   );
   done();
@@ -244,6 +253,7 @@ gulp.task('default', function (done) {
     'devimg',
     'devfonts',
     ['devcss', 'devjs'],
+    'html',
     'watch',
   function () {
     gulp.start(['server'])
