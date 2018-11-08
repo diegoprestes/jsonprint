@@ -16,6 +16,8 @@ export default class JSONPrint {
 		this.fieldFile = this.fields.querySelector('.field-file');
 		this.processButton = this.fields.querySelector('.field-process');
 
+		this.output = document.querySelector('.output');
+
 		this.bindEvents();
 	}
 
@@ -74,6 +76,49 @@ export default class JSONPrint {
 	}
 
 	processJSON(data) {
-		console.log('process json', data);
+		this.updateInputState(false);
+
+		// http://localhost:3005/build/json/test.json
+		
+		var html = '<div class="json-wrapper">';
+		html += this.processObject(data);
+		html += '</div>';
+
+		this.output.innerHTML = html;
+	}
+
+	processObject(data) {
+		let html = '<ul>';
+		for (let key in data) {
+			let keyValue = '"' + key + '": ';
+			if (data instanceof Array) {
+				keyValue = '';
+			}
+
+			html += '<li>';
+			if (data[key] == null) {
+				html += keyValue + data[key] + ',';
+			} else if (typeof(data[key]) == 'object') {
+				let bracketStart = '{';
+				let bracketEnd = '}';
+				if (data[key] instanceof Array) {
+					bracketStart = '[';
+					bracketEnd = ']';
+				}
+
+				html += keyValue + bracketStart + this.processObject(data[key]) + bracketEnd + ',';
+			} else {
+				if (typeof(data[key]) == 'string') {
+					html += keyValue + '"' + data[key] + '",';;	
+				} else {
+					html += keyValue + data[key] + ',';;
+				}
+				
+			}
+			html += '</li>';
+		}
+		html += '</ul>';
+
+		return html;
 	}
 }
