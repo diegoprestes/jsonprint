@@ -63,11 +63,9 @@ gulp.task('js', function () {
 
   return b.bundle()
     .pipe(source('bundle.js'))
-  // return gulp.src(config.js.tmp)
     .pipe($.plumber({
       errorHandler: onError
     }))
-    // .pipe(babel())
     .pipe(buffer())
     .pipe($.uglify())
     .pipe($.rev())
@@ -89,8 +87,6 @@ gulp.task('devjs', function () {
     .pipe($.plumber({
       errorHandler: onError
     }))
-    // .pipe(sourcemaps.init())
-    // .pipe(babel())
     .pipe(buffer())
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe($.uglify())
@@ -131,21 +127,18 @@ gulp.task('devcss', function () {
     .pipe(reload({stream: true}));
 });
 
-//CSS里更新引入文件版本号
 gulp.task('revCss', function () {
   return gulp.src(['build/rev/**/*.json', 'css/*.scss'])
     .pipe($.revCollector())
     .pipe(gulp.dest('build/tmp'));
 });
 
-//CSS里更新引入文件版本号
 gulp.task('revJs', function () {
   return gulp.src(['build/rev/**/*.json', 'js/*.js'])
     .pipe($.revCollector())
     .pipe(gulp.dest('build/tmp'));
 });
 
-//Html替换css、js文件版本
 gulp.task('html', function () {
   return gulp.src(['build/rev/**/*.json', '*.html'])
     .pipe($.revCollector({
@@ -158,8 +151,6 @@ gulp.task('html', function () {
     .pipe(gulp.dest(config.html.dest));
 });
 
-
-// 生成版本号清单
 gulp.task('revJson', function () {
   return gulp.src(['build/**/*.*'])
     .pipe($.rev())
@@ -235,18 +226,6 @@ gulp.task('dist', function (done) {
   );
   done();
 });
-
-gulp.task('vdist', function (done) {
-  runSequence(
-    'devimg',
-    'devfonts',
-    ['devcss', 'devjs'],
-    'html',
-    'addVersion'
-  );
-  done();
-});
-
 
 gulp.task('default', function (done) {
   runSequence(
